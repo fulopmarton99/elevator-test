@@ -1,6 +1,5 @@
-
-const express = require('express'),
-    apiRoutes = require('./api');
+const express = require("express"),
+  apiRoutes = require("./api");
 
 const app = express();
 
@@ -9,4 +8,4 @@ app.get("/", function (req, res) {
 });
 // rest api to control elevators
 app.use("/api", apiRoutes);
-app.listen(3000);
+app.listen(3030);
