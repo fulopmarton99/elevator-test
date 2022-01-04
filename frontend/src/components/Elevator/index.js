@@ -1,11 +1,10 @@
 import React from "react";
 import { Wrapper, FloorDisplay } from "./Elevator.styles";
-
+import SevenSegment from "../SevenSegment";
 const Elevator = ({ floor }) => {
   return (
     <Wrapper>
-          <FloorDisplay value={floor}></FloorDisplay>
-          
+      <SevenSegment value={floor}></SevenSegment>
     </Wrapper>
   );
 };

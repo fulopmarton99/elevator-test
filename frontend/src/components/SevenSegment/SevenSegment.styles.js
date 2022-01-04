@@ -5,6 +5,7 @@ export const Wrapper = styled.div`
   width: 50px;
   height: 50px;
   position: relative;
+  transform: translate(50%, 0%);
 `;
 export const Segment = styled.div`
   background: ${({ active }) => (active ? "red" : "rgb(59, 0, 0)")};

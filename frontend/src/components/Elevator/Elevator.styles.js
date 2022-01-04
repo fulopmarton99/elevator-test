@@ -4,8 +4,10 @@ import SevenSegment from "../SevenSegment";
 
 export const Wrapper = styled.div`
   background: blue;
-  width: 50px;
-  height: 100px;
+  width: 100px;
+  height: 200px;
+
+  position: relative;
 `;
 export const FloorDisplay = SevenSegment;
 // SevenSegmentDisplay;
