@@ -6,8 +6,18 @@ import SevenSegment from "./components/SevenSegment";
 import Keypad from "./components/Keypad";
 
 function App() {
-  // return <Elevator floor={1}></Elevator>;
-  return <Keypad></Keypad>;
+  return (
+    <div>
+      <Elevator floor={0}></Elevator>
+      <Elevator floor={6}></Elevator>
+    </div>
+  );
+  // return (
+  //   <div>
+  //     <Keypad></Keypad>
+  //     {/* <Keypad></Keypad> */}
+  //   </div>
+  // );
   // return (
   //   <div>
   //     <Elevator floor={3}></Elevator>

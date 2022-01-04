@@ -17,9 +17,7 @@ const Keypad = () => {
         return <Button key={val}>{val}</Button>;
       })}
       <br></br>
-      {/* <Button key={-1} style={{ display: "none" }}>
-        0
-      </Button> */}
+
       <Button
         key={0}
         style={{
