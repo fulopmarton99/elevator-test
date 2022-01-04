@@ -1,16 +1,15 @@
 import React from "react";
 
-import { Wrapper, CallButton } from "./Floor.styles";
+import { Wrapper, CallButton } from "./ElevatorCallButton.styles";
 
-const Floor = ({ level }) => {
+const ElevatorCallButton = () => {
   return (
     <Wrapper>
       <CallButton>^</CallButton>
       <br></br>
       <CallButton>v</CallButton>
-
     </Wrapper>
   );
 };
 
-export default Floor;
+export default ElevatorCallButton;
