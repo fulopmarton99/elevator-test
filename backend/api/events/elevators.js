@@ -10,10 +10,7 @@ router.get("/:elevatorId", (req, res) => {
     "Cache-Control": "no-cache",
     "Content-Type": "text/event-stream",
     Connection: "keep-alive",
-    // enabling CORS
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers":
-      "Origin, X-Requested-With, Content-Type, Accept",
+
   });
   res.flushHeaders();
   ///######

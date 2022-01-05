@@ -8,9 +8,11 @@ export const Wrapper = styled.div`
   height: 120px;
   border: 5px solid grey;
   position: absolute;
-  transform: translate(100%, ${({ position }) => {
-    return (1 + Number(position)) * -100;
-  }}%);
+  transform: translate(${({ order }) => {
+    return (1 + Number(order)) * 100;
+  }}%, ${({ position }) => {
+  return (1 + Number(position)) * -100;
+}}%);
   display: flex;
   flex-direction: row;
   flex-flow column wrap;

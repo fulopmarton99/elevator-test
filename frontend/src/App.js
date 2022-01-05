@@ -14,15 +14,28 @@ function App() {
   // return <Floor level={0}></Floor>;
 
   const [positionA, setPositionA] = useState(0);
+  const [positionB, setPositionB] = useState(6);
 
   useEffect(() => {
-    console.log("IE");
     let eventSource = new EventSource(
       "http://localhost:3030/api/events/elevators/A"
     );
     eventSource.onmessage = (e) => {
       const data = JSON.parse(e.data);
       setPositionA(data.position);
+    };
+    eventSource.onerror = () => {
+      console.log("SSE error");
+    };
+  }, []);
+
+  useEffect(() => {
+    let eventSource = new EventSource(
+      "http://localhost:3030/api/events/elevators/B"
+    );
+    eventSource.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      setPositionB(data.position);
     };
     eventSource.onerror = () => {
       console.log("SSE error");
@@ -39,28 +52,10 @@ function App() {
           </div>
         );
       })}
-      <Elevator floor={positionA} id="A" position={positionA}></Elevator>
+      <Elevator id="A" position={positionA} order={0}></Elevator>
+      <Elevator id="B" position={positionB} order={1}></Elevator>
     </div>
   );
-
-  // return (
-  //   <div>
-  //     <Elevator floor={0}></Elevator>
-  //     <Elevator floor={6}></Elevator>
-  //   </div>
-  // );
-  // return (
-  //   <div>
-  //     <Keypad></Keypad>
-  //     {/* <Keypad></Keypad> */}
-  //   </div>
-  // );
-  // return (
-  //   <div>
-  //     <Elevator floor={3}></Elevator>
-  //   </div>
-  // );
-  // return <SevenSegment value={9}></SevenSegment>;
 }
 
 export default App;

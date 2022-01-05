@@ -4,9 +4,10 @@ import SevenSegment from "../SevenSegment";
 
 import Keypad from "../Keypad";
 
-const Elevator = ({ floor, id, position }) => {
+const Elevator = ({ id, position, order }) => {
+  const floor = Math.round(position);
   return (
-    <Wrapper position={position}>
+    <Wrapper position={position} order={order}>
       <h1 style={{ float: "left" }} style={{ transform: "translate(0,50%)" }}>
         {id}
       </h1>
