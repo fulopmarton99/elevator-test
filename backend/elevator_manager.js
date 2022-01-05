@@ -31,9 +31,8 @@ const best_elevator = (elevators, targetFloor) => {
 };
 
 var elevatorManager = (function () {
-  var elevatorEvent = (event) => {};
-
   var eventQueue = [];
+  const listeners = {};
 
   var elevators = elevator_array_to_dictionary(
     config.elevators.map((elevator) => {
@@ -41,6 +40,14 @@ var elevatorManager = (function () {
       return new Elevator(elevatorName, elevatorPosition);
     })
   );
+  const sendEvent = (event) => {
+    console.log("SENDING EVENT");
+    Object.values(listeners).forEach((res) => {
+      console.log("SENDING");
+      res.write(`data: ${JSON.stringify(event)}\n\n`);
+    });
+  };
+
   return {
     elevators: elevators,
     logStatus: () => {
@@ -50,6 +57,7 @@ var elevatorManager = (function () {
     getElevator: (elevatorId) => {
       return elevators[elevatorId];
     },
+    sendEvent,
     getElevators: () => {
       return elevators;
     },
@@ -60,19 +68,36 @@ var elevatorManager = (function () {
       });
       if (freeElevators.length == 0) {
         eventQueue.push((elevator) => {
-          elevator.sendTo(elevator);
+          elevator.sendTo(elevator, () => {
+            const event = { type: "update", elevators: {} };
+            event.elevators[elevator.name] = elevator;
+            sendEvent(event);
+          });
         }); // TODO: CREATE EVENT
       } else {
         const bestElevator = best_elevator(freeElevators, floor);
-        bestElevator.sendTo(floor);
+        bestElevator.sendTo(floor, () => {
+          const event = { type: "update", elevators: {} };
+          event.elevators[bestElevator.name] = bestElevator;
+          sendEvent(event);
+        });
       }
     },
     freeElevator: (elevatorId) => {
       this.elevators[elevatorId].occupied = false;
       return;
     },
+    subscribe: (res) => {
+      listeners[res] = res;
+    },
+
+    unsubscribe: (res) => {
+      delete listeners[res];
+    },
+
     releaseElevator: (elevatorId) => {
       this.elevators[elevatorId].occupied = false;
+      sendEvent({ type: "update", elevator: this.elevators[elevatorId] });
       if (eventQueue.length != 0) {
         const event = eventQueue[0];
         eventQueue = eventQueue.slice(1, -1);

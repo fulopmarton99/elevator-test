@@ -1,6 +1,28 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
 import SevenSegment from "../SevenSegment";
+
+const elevatorMoveAnimation = ({ order, position, destination }) => {
+  return keyframes`
+  0% {
+    transform: translate(${(order + 1) * 100}%, -${
+    (1 + Number(position)) * 100
+  }%);
+  }
+  100%{
+    transform: translate(${(order + 1) * 100}%, -${
+    (1 + Number(destination)) * 100
+  }%);
+  }
+
+`;
+};
+
+const moveElevator = (props) => css`
+  ${elevatorMoveAnimation(props)} ${Math.abs(
+    props.position - props.destination
+  )}s linear
+`;
 
 export const Wrapper = styled.div`
   background: lightblue;
@@ -8,16 +30,18 @@ export const Wrapper = styled.div`
   height: 120px;
   border: 5px solid grey;
   position: absolute;
-  transform: translate(${({ order }) => {
-    return (1 + Number(order)) * 100;
-  }}%, ${({ position }) => {
-  return (1 + Number(position)) * -100;
-}}%);
+
   display: flex;
   flex-direction: row;
   flex-flow column wrap;
   overflow: hidden;
+  transform: translate(${({ order }) => (1 + Number(order)) * 100}%, ${({
+  destination,
+}) => {
+  return (1 + Number(destination)) * -100;
+}}%);
+  animation: ${moveElevator};
 
-  // flex-shrink: 0;
+
 `;
 export const FloorDisplay = SevenSegment;

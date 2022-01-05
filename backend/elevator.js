@@ -40,7 +40,7 @@ class Elevator {
     this.occupied = false;
     this.position = this.destination;
   };
-  sendTo = (floor) => {
+  sendTo = (floor, callback) => {
     if (this.occupied) {
       console.log("ERROR: Trying to send occupied elevator");
     } else {
@@ -51,7 +51,8 @@ class Elevator {
       console.log(this.occupied);
       setTimeout(() => {
         this.arrive();
-      }, 3000);
+      }, Math.abs(this.postion - this.destination) * 1000);
+      callback();
     }
   };
 }
