@@ -1,14 +1,21 @@
 import React from "react";
 
-import { Wrapper, CallButton } from "./Floor.styles";
+import { Wrapper } from "./Floor.styles";
+
+import ElevatorCallButton from "../ElevatorCallButton";
+import Elevator from "../Elevator";
 
 const Floor = ({ level }) => {
   return (
     <Wrapper>
-      <CallButton>^</CallButton>
-      <br></br>
-      <CallButton>v</CallButton>
-
+      <h1
+        style={{
+          margin: 10,
+        }}
+      >
+        {level}
+      </h1>
+      <ElevatorCallButton level = {level}></ElevatorCallButton>
     </Wrapper>
   );
 };

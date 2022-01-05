@@ -7,9 +7,41 @@ import Keypad from "./components/Keypad";
 import ElevatorCallButton from "./components/ElevatorCallButton";
 import Floor from "./components/Floor";
 
+import { useState, useEffect } from "react";
+// import React from "react";
+
 function App() {
-  return <ElevatorCallButton></ElevatorCallButton>;
-  // <Floor level={0}></Floor>;
+  // return <Floor level={0}></Floor>;
+
+  const [positionA, setPositionA] = useState(0);
+
+  useEffect(() => {
+    console.log("IE");
+    let eventSource = new EventSource(
+      "http://localhost:3030/api/events/elevators/A"
+    );
+    eventSource.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      setPositionA(data.position);
+    };
+    eventSource.onerror = () => {
+      console.log("SSE error");
+    };
+  }, []);
+
+  return (
+    <div style={{ width: "100%", display: "inline-block" }}>
+      {[...Array(7).keys()].reverse().map((level) => {
+        return (
+          <div key={level}>
+            <Floor key={level} level={level}></Floor>
+            <br></br>
+          </div>
+        );
+      })}
+      <Elevator floor={positionA} id="A" position={positionA}></Elevator>
+    </div>
+  );
 
   // return (
   //   <div>

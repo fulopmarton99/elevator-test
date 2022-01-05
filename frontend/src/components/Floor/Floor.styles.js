@@ -2,12 +2,11 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   background: red;
-  // width: 100px;
-  // heigth: 100px;
+  border: 5px solid green;
+  width: 200px;
+  height: 120px;
+
   display: inline-block;
 `;
 
-export const CallButton = styled.button`
-  vertical-align: top;
-  // display: inline-block;
-`;
+

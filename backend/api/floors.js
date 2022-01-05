@@ -1,13 +1,15 @@
 const express = require("express"),
-    elevatorManager = require("../elevator_manager");
+  elevatorManager = require("../elevator_manager");
 
 const router = express.Router();
 
 router.post("/:floorId", (req, res) => {
-    //
-    const { floorId } = req.params;
-    elevatorManager.callElevator(floorId);
-});
+  //
+  const { floorId } = req.params;
 
+  // res.flushHeaders();
+  elevatorManager.callElevator(floorId);
+  res.send('{"status":"SUCCESS"}');
+});
 
 module.exports = router;
