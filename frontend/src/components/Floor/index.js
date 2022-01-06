@@ -4,8 +4,9 @@ import { Wrapper } from "./Floor.styles";
 
 import ElevatorCallButton from "../ElevatorCallButton";
 import Elevator from "../Elevator";
+import ElevatorStatusDisplay from "../ElevatorStatusDisplay";
 
-const Floor = ({ level }) => {
+const Floor = ({ level, elevatorDirectionA, elevatorDirectionB }) => {
   return (
     <Wrapper>
       <h1
@@ -15,7 +16,15 @@ const Floor = ({ level }) => {
       >
         {level}
       </h1>
-      <ElevatorCallButton level = {level}></ElevatorCallButton>
+      <ElevatorCallButton level={level}></ElevatorCallButton>
+      <ElevatorStatusDisplay
+        elevatorName="A"
+        direction={elevatorDirectionA}
+      ></ElevatorStatusDisplay>
+      <ElevatorStatusDisplay
+        elevatorName="B"
+        direction={elevatorDirectionB}
+      ></ElevatorStatusDisplay>
     </Wrapper>
   );
 };

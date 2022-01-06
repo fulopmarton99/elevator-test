@@ -19,7 +19,31 @@ class Elevator {
     this.position = this.destination;
     this.onFreeCallback(this.name);
   };
-  
+  intercept = (floor, direction) => {
+    // try to intercept if possible
+    const elevatorDirection = this.position < this.destination ? 1 : -1;
+    if (elevatorDirection != direction) {
+      //
+      return false;
+    }
+    const [minf, maxf] = Math.min(this.position, this.destination);
+    if (minf > floor) {
+      return false;
+    }
+    if (maxf < floor) {
+      return false;
+    }
+    const currentTime = Date.now();
+    if (currentTime > this.arrivalTime) {
+      // Elevator already arrived to destination
+      return false;
+    }
+    // calculate current position of elevator
+    const currentPosition = this.position + (this.destination - this.position) * ((currentTime - this.sendingTime) / (this.arrivalTime - this.sendingTime));
+
+    // check if elevator went past intercepting floor
+
+  }
   sendTo = (floor, callback) => {
     if (this.occupied) {
       self.eventQueue.push(() => {

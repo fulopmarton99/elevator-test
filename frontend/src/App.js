@@ -17,12 +17,15 @@ function App() {
   const [positionB, setPositionB] = useState(6);
   const [destinationA, setDestinationA] = useState(0);
   const [destinationB, setDestinationB] = useState(6);
+  const [elevatorDirectionA, setElevatorDirectionA] = useState(0);
+  const [elevatorDirectionB, setElevatorDirectionB] = useState(0);
 
   //refresh floor display
   const moveToDestination = (
     position,
     setPosition,
     setDestination,
+    setDirection,
     finalDestination
   ) => {
     position = Number(position);
@@ -30,7 +33,7 @@ function App() {
 
     if (position !== finalDestination) {
       const direction = finalDestination - position > 0 ? 1 : -1;
-
+      setDirection(direction);
       const nextDestination =
         direction === 1
           ? Math.floor(position + direction)
@@ -40,11 +43,14 @@ function App() {
           nextDestination,
           setPosition,
           setDestination,
+          setDirection,
           finalDestination
         );
       }, 1000);
       setPosition(position);
       setDestination(nextDestination);
+    } else {
+      setDirection(0);
     }
   };
 
@@ -68,6 +74,7 @@ function App() {
             position,
             setPositionA,
             setDestinationA,
+            setElevatorDirectionA,
             destination
           );
         }
@@ -77,6 +84,7 @@ function App() {
             position,
             setPositionB,
             setDestinationB,
+            setElevatorDirectionB,
             destination
           );
         }
@@ -91,10 +99,12 @@ function App() {
     <div style={{ width: "100%", display: "inline-block" }}>
       {[...Array(7).keys()].reverse().map((level) => {
         return (
-          <div key={level}>
-            <Floor key={level} level={level}></Floor>
-            <br></br>
-          </div>
+          <Floor
+            key={level}
+            level={level}
+            elevatorDirectionA={elevatorDirectionA}
+            elevatorDirectionB={elevatorDirectionB}
+          ></Floor>
         );
       })}
       <Elevator

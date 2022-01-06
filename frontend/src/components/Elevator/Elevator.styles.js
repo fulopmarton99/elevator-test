@@ -30,7 +30,6 @@ export const Wrapper = styled.div`
   height: 120px;
   border: 5px solid grey;
   position: absolute;
-
   display: inline-block;
   // flex-direction: row;
   // flex-flow column wrap;
