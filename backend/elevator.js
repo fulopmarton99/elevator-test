@@ -36,22 +36,29 @@ class Elevator {
     this.occupied = false;
     this.destination = position;
   }
+
+  setOnFreeCallback = (callback) => {
+    this.onFreeCallback = callback;
+  };
   arrive = () => {
     this.occupied = false;
     this.position = this.destination;
+    this.onFreeCallback(this.name);
   };
   sendTo = (floor, callback) => {
     if (this.occupied) {
       console.log("ERROR: Trying to send occupied elevator");
     } else {
+      this.occupied = true;
       console.log(`sending ${this.name} to ${floor}`);
       console.log(this.occupied);
-      this.occupied = true;
+
       this.destination = floor;
-      console.log(this.occupied);
+      
+      console.log(this.position - this.destination);
       setTimeout(() => {
         this.arrive();
-      }, Math.abs(this.postion - this.destination) * 1000);
+      }, Math.abs(this.position - this.destination) * 1000);
       callback();
     }
   };

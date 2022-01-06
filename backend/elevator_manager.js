@@ -1,4 +1,3 @@
-const { unsubscribe } = require("./api/elevators.js");
 const config = require("./config.js"),
   Elevator = require("./elevator.js");
 
@@ -42,9 +41,7 @@ var elevatorManager = (function () {
     })
   );
   const sendEvent = (event) => {
-    console.log("SENDING EVENT", Object.values(listeners).length);
     Object.values(listeners).forEach((res) => {
-      console.log("SENDING");
       res.write(`data: ${JSON.stringify(event)}\n\n`);
     });
   };
@@ -84,7 +81,7 @@ var elevatorManager = (function () {
       }
     },
     freeElevator: (elevatorId) => {
-      this.elevators[elevatorId].occupied = false;
+      elevators[elevatorId].occupied = false;
       return;
     },
     subscribe: (key, res) => {
@@ -93,13 +90,12 @@ var elevatorManager = (function () {
     },
 
     unsubscribe: (key) => {
-      console.log("unsubscribe");
+      console.log("unsubscribe " + key);
       delete listeners[key];
     },
 
     releaseElevator: (elevatorId) => {
-      this.elevators[elevatorId].occupied = false;
-      // sendEvent({ type: "update", elevator: this.elevators[elevatorId] });
+      elevators[elevatorId].occupied = false;
       if (eventQueue.length != 0) {
         const event = eventQueue[0];
         eventQueue = eventQueue.slice(1, -1);
@@ -111,4 +107,7 @@ var elevatorManager = (function () {
   };
 })();
 
+Object.values(elevatorManager.elevators).forEach((elevator) => {
+  elevator.setOnFreeCallback(elevatorManager.releaseElevator);
+});
 module.exports = elevatorManager;
