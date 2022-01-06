@@ -41,6 +41,7 @@ var elevatorManager = (function () {
     })
   );
   const sendEvent = (event) => {
+    // console.log(event);
     Object.values(listeners).forEach((res) => {
       res.write(`data: ${JSON.stringify(event)}\n\n`);
     });
@@ -65,7 +66,7 @@ var elevatorManager = (function () {
       });
       if (freeElevators.length == 0) {
         eventQueue.push((elevator) => {
-          elevator.sendTo(elevator, () => {
+          elevator.sendTo(floor, () => {
             const event = { type: "update", elevators: {} };
             event.elevators[elevator.name] = elevator;
             sendEvent(event);
@@ -79,6 +80,18 @@ var elevatorManager = (function () {
           sendEvent(event);
         });
       }
+    },
+    floorCount: () => {
+      return config.stories;
+    },
+    sendElevator: (elevatorId, targetFloor) => {
+      //sending from inside the elevator
+
+      elevators[elevatorId].sendTo(targetFloor, () => {
+        const event = { type: "update", elevators: {} };
+        event.elevators[elevatorId] = elevators[elevatorId];
+        sendEvent(event);
+      });
     },
     freeElevator: (elevatorId) => {
       elevators[elevatorId].occupied = false;
@@ -99,7 +112,7 @@ var elevatorManager = (function () {
       if (eventQueue.length != 0) {
         const event = eventQueue[0];
         eventQueue = eventQueue.slice(1, -1);
-        event(this.elevators[elevatorId]);
+        event(elevators[elevatorId]);
       } else {
         return;
       }

@@ -3,6 +3,16 @@ const express = require("express"),
 
 const router = express.Router();
 
+router.post("/:elevatorId/:targetFloor", (req, res) => {
+  const { elevatorId, targetFloor } = req.params;
+  if (Number(targetFloor) >= elevatorManager.floorCount() || targetFloor < 0) {
+    res.json({ status: `NON EXISTENT FLOOR ${targetFloor}` });
+    return;
+  }
+  elevatorManager.sendElevator(elevatorId, targetFloor);
+  res.json({ status: "SUCCESS" });
+});
+
 router.get("/:elevatorId", (req, res) => {
   res.json(elevatorManager.getElevator(req.params.elevatorId));
 });
@@ -10,8 +20,5 @@ router.get("/:elevatorId", (req, res) => {
 router.get("/", (req, res) => {
   res.json(elevatorManager.getElevators());
 });
-
-
-
 
 module.exports = router;

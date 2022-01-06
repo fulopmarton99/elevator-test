@@ -1,33 +1,5 @@
 // base class of elevators
 
-// const Elevator = (name, position) => {
-//   var occupied = false;
-
-//   // var [name, position] = [elevatorName, elevatorPosition];
-//   return {
-//     getOccupied: () => {
-//       return this.occupied;
-//     },
-//     setOccupied: (value) => {
-//       this.occupied = value;
-//     },
-//     name,
-//     position,
-//     occupied: false,
-//     destination: position,
-//     sendTo: (floor) => {
-//       if (this.occupied) {
-//         console.log("ERROR: Trying to send occupied elevator");
-//       } else {
-//         console.log(`sending ${this.name} to ${floor}`);
-//         console.log(this.occupied);
-//         this.occupied = true;
-//         destination = floor;
-//         console.log(occupied);
-//       }
-//     },
-//   };
-// };
 
 class Elevator {
   constructor(name, position) {
@@ -36,6 +8,7 @@ class Elevator {
     this.occupied = false;
     this.destination = position;
   }
+  eventQueue = []; //elevator specific events
 
   setOnFreeCallback = (callback) => {
     this.onFreeCallback = callback;
@@ -47,17 +20,26 @@ class Elevator {
   };
   sendTo = (floor, callback) => {
     if (this.occupied) {
-      console.log("ERROR: Trying to send occupied elevator");
+      self.eventQueue.push(() => {
+        this.sendTo(floor, callback);
+      });
     } else {
       this.occupied = true;
       console.log(`sending ${this.name} to ${floor}`);
       console.log(this.occupied);
 
       this.destination = floor;
-      
+
       console.log(this.position - this.destination);
       setTimeout(() => {
-        this.arrive();
+        if (this.eventQueue.length === 0) {
+          this.arrive();
+        } else {
+          const event = this.eventQueue[0];
+          this.eventQueue = this.eventQueue.splice(1, -1);
+          event();
+
+        }
       }, Math.abs(this.position - this.destination) * 1000);
       callback();
     }
