@@ -2,6 +2,9 @@ import React from "react";
 
 import { Wrapper, CallButton } from "./ElevatorCallButton.styles";
 
+import upArrow from "../../svgs/arrow-up-solid.svg";
+import downArrow from "../../svgs/arrow-down-solid.svg";
+
 const onClickPrototype = ({ level, direction }) => {
   return () => {
     const requestOptions = {
@@ -28,11 +31,11 @@ const ElevatorCallButton = ({ level }) => {
   return (
     <Wrapper>
       <CallButton onClick={onClickPrototype({ level, direction: "up" })}>
-        ^
+        <img src={upArrow} alt="Call elevator up"></img>
       </CallButton>
       <br></br>
       <CallButton onClick={onClickPrototype({ level, direction: "down" })}>
-        v
+        <img src={downArrow} alt="Call elevator down"></img>
       </CallButton>
     </Wrapper>
   );

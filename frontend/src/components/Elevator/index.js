@@ -5,7 +5,6 @@ import SevenSegment from "../SevenSegment";
 import Keypad from "../Keypad";
 
 const Elevator = ({ id, position, order, destination }) => {
-  const floor = Math.round(position);
   return (
     <Wrapper position={position} destination={destination} order={order}>
       <SevenSegment value={destination}></SevenSegment>

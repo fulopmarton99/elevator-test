@@ -3,7 +3,7 @@ import React from "react";
 import { Wrapper } from "./Floor.styles";
 
 import ElevatorCallButton from "../ElevatorCallButton";
-import Elevator from "../Elevator";
+
 import ElevatorStatusDisplay from "../ElevatorStatusDisplay";
 
 const Floor = ({ level, elevatorDirectionA, elevatorDirectionB }) => {

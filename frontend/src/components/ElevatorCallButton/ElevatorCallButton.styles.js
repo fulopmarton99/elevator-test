@@ -9,5 +9,6 @@ export const Wrapper = styled.div`
 
 export const CallButton = styled.button`
   vertical-align: top;
-  // display: inline-block;
+  width: 40px;
+  
 `;
