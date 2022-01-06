@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Wrapper } from "./Floor.styles";
+import { Wrapper, StatusWrapper } from "./Floor.styles";
 
 import ElevatorCallButton from "../ElevatorCallButton";
 
@@ -17,14 +17,16 @@ const Floor = ({ level, elevatorDirectionA, elevatorDirectionB }) => {
         {level}
       </h1>
       <ElevatorCallButton level={level}></ElevatorCallButton>
-      <ElevatorStatusDisplay
-        elevatorName="A"
-        direction={elevatorDirectionA}
-      ></ElevatorStatusDisplay>
-      <ElevatorStatusDisplay
-        elevatorName="B"
-        direction={elevatorDirectionB}
-      ></ElevatorStatusDisplay>
+      <StatusWrapper>
+        <ElevatorStatusDisplay
+          elevatorName="A"
+          direction={elevatorDirectionA}
+        ></ElevatorStatusDisplay>
+        <ElevatorStatusDisplay
+          elevatorName="B"
+          direction={elevatorDirectionB}
+        ></ElevatorStatusDisplay>
+      </StatusWrapper>
     </Wrapper>
   );
 };

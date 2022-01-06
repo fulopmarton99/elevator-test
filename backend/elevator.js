@@ -1,13 +1,12 @@
 // base class of elevators
 
-
 class Elevator {
   constructor(name, position) {
     this.name = name;
     this.position = position;
     this.occupied = false;
     this.destination = position;
-    this.sendingTime = Date.now()
+    this.sendingTime = Date.now();
   }
   eventQueue = []; //elevator specific events
 
@@ -15,9 +14,18 @@ class Elevator {
     this.onFreeCallback = callback;
   };
   arrive = () => {
-    this.occupied = false;
-    this.position = this.destination;
-    this.onFreeCallback(this.name);
+    setTimeout(() => {
+      this.occupied = false;
+      this.position = this.destination;
+
+      if (this.eventQueue.length === 0) {
+        this.onFreeCallback(this.name);
+      } else {
+        const event = this.eventQueue[0];
+        this.eventQueue = this.eventQueue.splice(1, -1);
+        event();
+      }
+    }, 1000);
   };
   intercept = (floor, direction) => {
     // try to intercept if possible
@@ -39,36 +47,31 @@ class Elevator {
       return false;
     }
     // calculate current position of elevator
-    const currentPosition = this.position + (this.destination - this.position) * ((currentTime - this.sendingTime) / (this.arrivalTime - this.sendingTime));
+    const currentPosition =
+      this.position +
+      (this.destination - this.position) *
+        ((currentTime - this.sendingTime) /
+          (this.arrivalTime - this.sendingTime));
 
     // check if elevator went past intercepting floor
-
-  }
+  };
   sendTo = (floor, callback) => {
     if (this.occupied) {
-      self.eventQueue.push(() => {
+      this.eventQueue.push(() => {
         this.sendTo(floor, callback);
       });
     } else {
       this.occupied = true;
       console.log(`sending ${this.name} to ${floor}`);
-      console.log(this.occupied);
+
       this.destination = floor;
 
       this.sendingTime = Date.now();
-      this.arrivalTime = Date.now() + Math.abs(this.position - this.destination) * 1000;
+      this.arrivalTime =
+        Date.now() + Math.abs(this.position - this.destination) * 1000;
 
-
-      console.log(this.position - this.destination);
       setTimeout(() => {
-        if (this.eventQueue.length === 0) {
-          this.arrive();
-        } else {
-          const event = this.eventQueue[0];
-          this.eventQueue = this.eventQueue.splice(1, -1);
-          event();
-
-        }
+        this.arrive();
       }, Math.abs(this.position - this.destination) * 1000);
       callback();
     }

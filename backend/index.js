@@ -26,6 +26,6 @@ app.use(morgan("combined"));
 app.get("/", function (req, res) {
   res.send("Hello World");
 });
-// rest api to control elevators
+
 app.use("/api", apiRoutes);
 app.listen(3030);

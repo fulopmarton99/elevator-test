@@ -5,7 +5,6 @@ export const Wrapper = styled.div`
   width: 50px;
   height: 50px;
   position: absolute;
-  // transform: translate(50%, 0%);
   float: left;
 `;
 export const Segment = styled.div`

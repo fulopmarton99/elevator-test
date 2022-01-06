@@ -12,10 +12,8 @@ const onClickPrototype = ({ level, direction }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ direction: direction }),
     };
-    console.log("FETCHING " + level);
     fetch(`http://localhost:3030/api/floors/${level}`, requestOptions)
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
@@ -33,7 +31,7 @@ const ElevatorCallButton = ({ level }) => {
       <CallButton onClick={onClickPrototype({ level, direction: "up" })}>
         <img src={upArrow} alt="Call elevator up"></img>
       </CallButton>
-      <br></br>
+
       <CallButton onClick={onClickPrototype({ level, direction: "down" })}>
         <img src={downArrow} alt="Call elevator down"></img>
       </CallButton>

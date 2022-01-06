@@ -41,7 +41,6 @@ var elevatorManager = (function () {
     })
   );
   const sendEvent = (event) => {
-    // console.log(event);
     Object.values(listeners).forEach((res) => {
       res.write(`data: ${JSON.stringify(event)}\n\n`);
     });

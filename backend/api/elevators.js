@@ -5,11 +5,15 @@ const router = express.Router();
 
 router.post("/:elevatorId/:targetFloor", (req, res) => {
   const { elevatorId, targetFloor } = req.params;
-  if (Number(targetFloor) >= elevatorManager.floorCount() || targetFloor < 0) {
+
+  if (
+    Number(targetFloor) >= elevatorManager.floorCount() ||
+    Number(targetFloor) < 0
+  ) {
     res.json({ status: `NON EXISTENT FLOOR ${targetFloor}` });
     return;
   }
-  elevatorManager.sendElevator(elevatorId, targetFloor);
+  elevatorManager.sendElevator(elevatorId, Number(targetFloor));
   res.json({ status: "SUCCESS" });
 });
 

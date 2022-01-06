@@ -11,9 +11,11 @@ const ElevatorStatusDisplay = ({ status, elevatorName, direction }) => {
   return (
     <Wrapper>
       <LiftName>{elevatorName}</LiftName>
+
       <DirectionDisplay key="A" direction={(direction === 1).toString()}>
         <img src={upArrow} alt="Up arrow of lift"></img>
       </DirectionDisplay>
+
       <DirectionDisplay key="B" direction={(direction === -1).toString()}>
         <img src={downArrow} alt="Down arrow of lift"></img>
       </DirectionDisplay>

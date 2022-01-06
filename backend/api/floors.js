@@ -4,10 +4,9 @@ const express = require("express"),
 const router = express.Router();
 
 router.post("/:floorId", (req, res) => {
-  //
+  
   const { floorId } = req.params;
 
-  // res.flushHeaders();
   elevatorManager.callElevator(floorId);
   res.send('{"status":"SUCCESS"}');
 });

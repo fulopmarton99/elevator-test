@@ -5,6 +5,8 @@ import SevenSegment from "./components/SevenSegment";
 
 import Keypad from "./components/Keypad";
 import ElevatorCallButton from "./components/ElevatorCallButton";
+import ElevatorStatusDisplay from "./components/ElevatorStatusDisplay";
+
 import Floor from "./components/Floor";
 
 import { useState, useEffect } from "react";
@@ -21,6 +23,7 @@ function App() {
   const [elevatorDirectionB, setElevatorDirectionB] = useState(0);
 
   //refresh floor display
+
   const moveToDestination = (
     position,
     setPosition,
@@ -59,8 +62,6 @@ function App() {
       "http://localhost:3030/api/events/elevators/"
     );
     eventSource.onmessage = (e) => {
-      console.log("NEW MESSAGE");
-      console.log(e.data);
       const data = JSON.parse(e.data);
       if (data.type === "status") {
         setPositionA(data.elevators.A.position);
@@ -96,7 +97,7 @@ function App() {
   }, []);
 
   return (
-    <div style={{ width: "100%", display: "inline-block" }}>
+    <div style={{ width: "100%", height: "100%", display: "inline-block" }}>
       {[...Array(7).keys()].reverse().map((level) => {
         return (
           <Floor

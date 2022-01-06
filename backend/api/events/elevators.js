@@ -4,8 +4,6 @@ const express = require("express"),
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  // console.log(req.params);
-  // return;
   res.set({
     "Cache-Control": "no-cache",
     "Content-Type": "text/event-stream",
