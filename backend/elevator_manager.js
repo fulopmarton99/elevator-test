@@ -1,3 +1,4 @@
+const { unsubscribe } = require("./api/elevators.js");
 const config = require("./config.js"),
   Elevator = require("./elevator.js");
 
@@ -41,7 +42,7 @@ var elevatorManager = (function () {
     })
   );
   const sendEvent = (event) => {
-    console.log("SENDING EVENT");
+    console.log("SENDING EVENT", Object.values(listeners).length);
     Object.values(listeners).forEach((res) => {
       console.log("SENDING");
       res.write(`data: ${JSON.stringify(event)}\n\n`);
@@ -62,7 +63,6 @@ var elevatorManager = (function () {
       return elevators;
     },
     callElevator: (floor) => {
-      // console.log(elevators);
       const freeElevators = Object.values(elevators).filter((elevator) => {
         return !elevator.occupied;
       });
@@ -73,7 +73,7 @@ var elevatorManager = (function () {
             event.elevators[elevator.name] = elevator;
             sendEvent(event);
           });
-        }); // TODO: CREATE EVENT
+        });
       } else {
         const bestElevator = best_elevator(freeElevators, floor);
         bestElevator.sendTo(floor, () => {
@@ -87,17 +87,19 @@ var elevatorManager = (function () {
       this.elevators[elevatorId].occupied = false;
       return;
     },
-    subscribe: (res) => {
-      listeners[res] = res;
+    subscribe: (key, res) => {
+      console.log("subscribe " + key);
+      listeners[key] = res;
     },
 
-    unsubscribe: (res) => {
-      delete listeners[res];
+    unsubscribe: (key) => {
+      console.log("unsubscribe");
+      delete listeners[key];
     },
 
     releaseElevator: (elevatorId) => {
       this.elevators[elevatorId].occupied = false;
-      sendEvent({ type: "update", elevator: this.elevators[elevatorId] });
+      // sendEvent({ type: "update", elevator: this.elevators[elevatorId] });
       if (eventQueue.length != 0) {
         const event = eventQueue[0];
         eventQueue = eventQueue.slice(1, -1);

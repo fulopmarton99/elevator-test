@@ -18,15 +18,11 @@ router.get("/", (req, res) => {
       elevators: elevatorManager.getElevators(),
     })}\n\n`
   );
-  ///######
-  // const { elevatorId } = req.params;
-  // const elevator = elevatorManager.getElevator(elevatorId);
-  // console.log(`Elevator ${elevatorId} streaming`);
-  elevatorManager.subscribe(res);
+  const key = Math.floor(Math.random() * 1000000);
+  elevatorManager.subscribe(key, res);
 
   res.on("close", () => {
-    // clearInterval(intervalId);
-    elevatorManager.unsubscribe(res);
+    elevatorManager.unsubscribe(key);
   });
 });
 
