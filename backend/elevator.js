@@ -7,6 +7,7 @@ class Elevator {
     this.position = position;
     this.occupied = false;
     this.destination = position;
+    this.sendingTime = Date.now()
   }
   eventQueue = []; //elevator specific events
 
@@ -18,6 +19,7 @@ class Elevator {
     this.position = this.destination;
     this.onFreeCallback(this.name);
   };
+  
   sendTo = (floor, callback) => {
     if (this.occupied) {
       self.eventQueue.push(() => {
@@ -27,8 +29,11 @@ class Elevator {
       this.occupied = true;
       console.log(`sending ${this.name} to ${floor}`);
       console.log(this.occupied);
-
       this.destination = floor;
+
+      this.sendingTime = Date.now();
+      this.arrivalTime = Date.now() + Math.abs(this.position - this.destination) * 1000;
+
 
       console.log(this.position - this.destination);
       setTimeout(() => {
