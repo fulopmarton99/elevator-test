@@ -29,31 +29,32 @@ const Keypad = ({ elevatorId }) => {
   return (
     <Wrapper>
       <table>
-        {[0, 3, 6].map((lineStart) => {
-          return (
-            <tr key={lineStart}>
-              {[1, 2, 3].map((lineItem) => {
-                const val = lineStart + lineItem;
-                return (
-                  <th key={val}>
-                    <Button onClick={onClickPrototype(elevatorId, val)}>
-                      {val}
-                    </Button>
-                  </th>
-                );
-              })}
-            </tr>
-          );
-        })}
-        <tr>
-          <th></th>
-          <th>
-            <Button key={0} onClick={onClickPrototype(elevatorId, 0)}>
-              0
-            </Button>
-          </th>
-        </tr>
-        
+        <tbody>
+          {[0, 3, 6].map((lineStart) => {
+            return (
+              <tr key={lineStart}>
+                {[1, 2, 3].map((lineItem) => {
+                  const val = lineStart + lineItem;
+                  return (
+                    <td key={val}>
+                      <Button onClick={onClickPrototype(elevatorId, val)}>
+                        {val}
+                      </Button>
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+          <tr>
+            <td></td>
+            <td>
+              <Button key={0} onClick={onClickPrototype(elevatorId, 0)}>
+                0
+              </Button>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </Wrapper>
   );
