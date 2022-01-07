@@ -1,27 +1,23 @@
 {
   "name": "wgurus-test",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Root folder of project",
+  "main": " ",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "concurrently --kill-others \"cd frontend && npm start\" \"cd backend && npm start\""
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fulopmarton99/elevator-test.git"
   },
-  "author": "fulopmarton99",
+  "author": "Fülöp Márton",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/fulopmarton99/elevator-test/issues"
   },
   "homepage": "https://github.com/fulopmarton99/elevator-test#readme",
   "dependencies": {
-    "body-parser": "^1.19.1",
-    "cors": "^2.8.5",
-    "express": "^4.17.2",
-    "morgan": "^1.10.0",
-    "queue": "^6.0.2"
+    "concurrently": "^7.0.0"
   }
 }
