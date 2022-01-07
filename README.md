@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-To run the servers, you will need ```node``` and ```npm``` install.
+To run the servers, you will need ```node``` and ```npm``` installed.
 The code in this repository was developed and tested using ```node v16.13.1``` and ```npm v8.1.2```. Exactly matching versions arent necessary, but for best results it is recommended to use ```node v14``` or newer to avoid warnings when installing some packages.
 
 ## Installing dependencies
@@ -22,3 +22,6 @@ If you only want to start one of the servers, you will have to navigate to its d
 ### Starting both servers with the same command
 
 To start both servers, you will have to navigate to the root directory of the projects (directory containing both projects) and run the ```npm start``` command.
+
+# API documentation
+You can access the description of the backend api [here](./backend/README.md)
