@@ -1,61 +1,88 @@
 import "./App.css";
 
 import Elevator from "./components/Elevator";
-import SevenSegment from "./components/SevenSegment";
-
-import Keypad from "./components/Keypad";
-import ElevatorCallButton from "./components/ElevatorCallButton";
-import ElevatorStatusDisplay from "./components/ElevatorStatusDisplay";
 
 import Floor from "./components/Floor";
 
-import { useState, useEffect } from "react";
-// import React from "react";
+import { useState, useEffect, useReducer } from "react";
+import React from "react";
+
+const reducer = (state, action) => {
+  if (action.type === "move") {
+    return {
+      ...state,
+      position: state.destination,
+      destination: state.destination + action.payload.direction,
+      direction: action.payload.direction,
+    };
+  } else if (action.type === "arrive") {
+    return {
+      ...state,
+      position: state.destination,
+      direction: 0,
+    };
+  } else if (action.type === "status") {
+    const { destination } = action.payload;
+
+    return { ...state, position: destination, destination };
+  } else {
+    const { position, destination } = action.payload;
+    const direction =
+      destination > position ? 1 : destination === position ? 0 : -1;
+    return { ...state, ...action.payload, direction };
+  }
+};
 
 function App() {
-  // return <Floor level={0}></Floor>;
-
-  const [positionA, setPositionA] = useState(0);
-  const [positionB, setPositionB] = useState(6);
+  const [stateElevatorA, dispatchElevatorA] = useReducer(reducer, {
+    position: 0,
+    destination: 0,
+    direction: 0,
+  });
+  const [stateElevatorB, dispatchElevatorB] = useReducer(reducer, {
+    position: 6,
+    destination: 6,
+    direction: 0,
+  });
   const [destinationA, setDestinationA] = useState(0);
+
   const [destinationB, setDestinationB] = useState(6);
-  const [elevatorDirectionA, setElevatorDirectionA] = useState(0);
-  const [elevatorDirectionB, setElevatorDirectionB] = useState(0);
 
-  //refresh floor display
-
-  const moveToDestination = (
-    position,
-    setPosition,
-    setDestination,
-    setDirection,
-    finalDestination
-  ) => {
-    position = Number(position);
-    finalDestination = Number(finalDestination);
-
-    if (position !== finalDestination) {
-      const direction = finalDestination - position > 0 ? 1 : -1;
-      setDirection(direction);
-      const nextDestination =
-        direction === 1
-          ? Math.floor(position + direction)
-          : Math.ceil(position + direction);
-      setTimeout(() => {
-        moveToDestination(
-          nextDestination,
-          setPosition,
-          setDestination,
-          setDirection,
-          finalDestination
-        );
-      }, 1000);
-      setPosition(position);
-      setDestination(nextDestination);
+  useEffect(() => {
+    if (stateElevatorA.destination !== destinationA) {
+      const timeout = setTimeout(() => {
+        const direction = stateElevatorA.destination < destinationA ? 1 : -1;
+        dispatchElevatorA({
+          type: "move",
+          payload: { direction },
+        });
+      }, 1000 * (stateElevatorA.position !== stateElevatorA.destination));
+      return () => clearTimeout(timeout);
     } else {
-      setDirection(0);
+      const timeout = setTimeout(() => {
+        dispatchElevatorA({ type: "arrive" });
+      }, 1000);
+      return () => clearTimeout(timeout);
     }
-  };
+  }, [destinationA, stateElevatorA.destination, stateElevatorA.position]);
+
+  useEffect(() => {
+    if (stateElevatorB.destination !== destinationB) {
+      const timeout = setTimeout(() => {
+        const direction = stateElevatorB.destination < destinationB ? 1 : -1;
+        dispatchElevatorB({
+          type: "move",
+          payload: { direction },
+        });
+      }, 1000 * (stateElevatorB.position !== stateElevatorB.destination));
+      return () => clearTimeout(timeout);
+    } else {
+      const timeout = setTimeout(() => {
+        dispatchElevatorB({ type: "arrive" });
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [destinationB, stateElevatorB.destination, stateElevatorB.position]);
 
   useEffect(() => {
     let eventSource = new EventSource(
@@ -64,35 +91,30 @@ function App() {
     eventSource.onmessage = (e) => {
       const data = JSON.parse(e.data);
       if (data.type === "status") {
-        setPositionA(data.elevators.A.position);
+        dispatchElevatorA({
+          type: "status",
+          payload: data.elevators.A,
+        });
         setDestinationA(data.elevators.A.destination);
-        setPositionB(data.elevators.B.position);
+        dispatchElevatorB({
+          type: "status",
+          payload: data.elevators.B,
+        });
         setDestinationB(data.elevators.B.destination);
       } else if (data.type === "update") {
         if ("A" in data.elevators) {
-          const { position, destination } = data.elevators.A;
-          moveToDestination(
-            position,
-            setPositionA,
-            setDestinationA,
-            setElevatorDirectionA,
-            destination
-          );
+          setDestinationA(data.elevators.A.destination);
         }
         if ("B" in data.elevators) {
-          const { position, destination } = data.elevators.B;
-          moveToDestination(
-            position,
-            setPositionB,
-            setDestinationB,
-            setElevatorDirectionB,
-            destination
-          );
+          setDestinationB(data.elevators.B.destination);
         }
       }
     };
     eventSource.onerror = () => {
       console.log("SSE error");
+    };
+    return () => {
+      eventSource.close();
     };
   }, []);
 
@@ -103,23 +125,23 @@ function App() {
           <Floor
             key={level}
             level={level}
-            elevatorDirectionA={elevatorDirectionA}
-            elevatorDirectionB={elevatorDirectionB}
+            elevatorDirectionA={stateElevatorA.direction}
+            elevatorDirectionB={stateElevatorB.direction}
           ></Floor>
         );
       })}
       <Elevator
         key="A"
         id="A"
-        position={positionA}
-        destination={destinationA}
+        position={stateElevatorA.position}
+        destination={stateElevatorA.destination}
         order={0}
       ></Elevator>
       <Elevator
         key="B"
         id="B"
-        position={positionB}
-        destination={destinationB}
+        position={stateElevatorB.position}
+        destination={stateElevatorB.destination}
         order={1}
       ></Elevator>
     </div>

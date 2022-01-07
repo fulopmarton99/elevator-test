@@ -41,8 +41,8 @@ export const Wrapper = styled.div`
     }}%
   );
   animation: ${moveElevator};
-  @media (max-height: 350px) {
-    height: ${350 / 7}px;
+  @media (max-height: 630px) {
+    height: ${630 / 7}px;
   }
   }
 `;
