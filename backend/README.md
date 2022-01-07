@@ -13,3 +13,5 @@ Sending a post request to the `/api/elevators/:elevatorId/:targetFloor` endpoint
 ## /api/events/
 
 The clients can subscribe to the `/api/events/elevators` endpoint to get notifications about the status change of elevators. This endpoint uses server sent events to deliver the notifications. The first response is always a status report that contains the current status of each elevator, later requests will only contain the elevators that triggered the response.
+
+*Note: Because most web-browsers limit the number of active connection to a specific host and server sent events require an active connection, the number of subscribers from the same client might be limited.*
