@@ -2,6 +2,8 @@ import React from "react";
 
 import { Wrapper, Button } from "./Keypad.styles";
 
+import { apiHost } from "../../App";
+
 const onClickPrototype = (elevatorId, targetFloor) => {
   return () => {
     const requestOptions = {
@@ -9,7 +11,7 @@ const onClickPrototype = (elevatorId, targetFloor) => {
       headers: { "Content-Type": "application/json" },
     };
     fetch(
-      `http://localhost:3030/api/elevators/${elevatorId}/${targetFloor}`,
+      `${apiHost}/api/elevators/${elevatorId}/${targetFloor}`,
       requestOptions
     )
       .then((response) => {

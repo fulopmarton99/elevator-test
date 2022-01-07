@@ -7,6 +7,8 @@ import Floor from "./components/Floor";
 import { useState, useEffect, useReducer } from "react";
 import React from "react";
 
+export const apiHost = process.env.API_HOST || "http://localhost:3030";
+
 const reducer = (state, action) => {
   if (action.type === "move") {
     return {
@@ -85,9 +87,7 @@ function App() {
   }, [destinationB, stateElevatorB.destination, stateElevatorB.position]);
 
   useEffect(() => {
-    let eventSource = new EventSource(
-      "http://localhost:3030/api/events/elevators/"
-    );
+    let eventSource = new EventSource(`${apiHost}/api/events/elevators/`);
     eventSource.onmessage = (e) => {
       const data = JSON.parse(e.data);
       if (data.type === "status") {

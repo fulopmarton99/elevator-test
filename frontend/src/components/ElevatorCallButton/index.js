@@ -5,6 +5,8 @@ import { Wrapper, CallButton } from "./ElevatorCallButton.styles";
 import upArrow from "../../svgs/arrow-up-solid.svg";
 import downArrow from "../../svgs/arrow-down-solid.svg";
 
+import { apiHost } from "../../App";
+
 const onClickPrototype = ({ level, direction }) => {
   return () => {
     const requestOptions = {
@@ -12,7 +14,7 @@ const onClickPrototype = ({ level, direction }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ direction: direction }),
     };
-    fetch(`http://localhost:3030/api/floors/${level}`, requestOptions)
+    fetch(`${apiHost}/api/floors/${level}`, requestOptions)
       .then((response) => {
         return response.json();
       })
