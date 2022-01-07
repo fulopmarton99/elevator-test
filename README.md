@@ -27,3 +27,7 @@ To start both servers, you will have to navigate to the root directory of the pr
 
 # API documentation
 You can access the description of the backend api [here](./backend/README.md).
+
+# Diagrams
+
+You can find the diagrams [here](./diagrams/README.md).
